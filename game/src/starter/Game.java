@@ -11,11 +11,7 @@ import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
-import ecs.entities.Chort;
-import ecs.entities.Entity;
-import ecs.entities.Hero;
-import ecs.entities.Imp;
-import ecs.entities.Orc;
+import ecs.entities.*;
 import ecs.systems.System;
 import ecs.systems.*;
 import graphic.DungeonCamera;
@@ -81,11 +77,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
 
-    private static Entity chort;
-
-    private static Entity imp;
-
-    private static Entity orc;
+    private static Entity angel;
     private static Entity hero;
     private Logger gameLogger;
     private int leveldiff = 0;
@@ -168,6 +160,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         leveldiff++;
         currentLevel = levelAPI.getCurrentLevel();
         spawnMonster(leveldiff);
+        angel = new AngelNpc();
         entities.clear();
         getHero().ifPresent(this::placeOnLevelStart);
     }
