@@ -1,5 +1,8 @@
 package starter;
 
+import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+import static logging.LoggerConfig.initBaseLogger;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -11,13 +14,17 @@ import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
-import ecs.entities.*;
-import ecs.systems.System;
+import ecs.entities.Entity;
+import ecs.entities.Hero;
 import ecs.systems.*;
+import ecs.systems.System;
 import graphic.DungeonCamera;
 import graphic.Painter;
 import graphic.hud.PauseMenu;
 import graphic.textures.TextureHandler;
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Logger;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -28,13 +35,6 @@ import level.generator.randomwalk.RandomWalkGenerator;
 import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
-
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Logger;
-
-import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static logging.LoggerConfig.initBaseLogger;
 
 /** The heart of the framework. From here all strings are pulled. */
 public class Game extends ScreenAdapter implements IOnLevelLoader {
@@ -76,11 +76,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
-
-    private static Entity angel;
     private static Entity hero;
     private Logger gameLogger;
-    private int leveldiff = 0;
 
     public static void main(String[] args) {
         // start the game
@@ -157,10 +154,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     @Override
     public void onLevelLoad() {
-        leveldiff++;
         currentLevel = levelAPI.getCurrentLevel();
-        spawnMonster(leveldiff);
-        angel = new AngelNpc();
         entities.clear();
         getHero().ifPresent(this::placeOnLevelStart);
     }
@@ -231,25 +225,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (pauseMenu != null) {
             if (paused) pauseMenu.showMenu();
             else pauseMenu.hideMenu();
-        }
-    }
-    public void spawnMonster(int leveldiff) {
-        List<Chort> chort = new ArrayList<Chort>();
-        List<Imp> imp = new ArrayList<Imp>();
-        List<Orc> orc = new ArrayList<Orc>();
-        for (int i = 0; i < leveldiff; i++){
-            if (i % 3 == 0) {
-                int a = (int) (Math.random() * 101);
-                if (a <= 10){
-                    chort.add(new Chort());
-                }
-                else if (a <= 30){
-                    orc.add(new Orc());
-                }
-                else if (a <= 100) {
-                    imp.add(new Imp());
-                }
-            }
         }
     }
 
