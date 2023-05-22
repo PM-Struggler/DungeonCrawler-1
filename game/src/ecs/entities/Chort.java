@@ -1,10 +1,8 @@
 package ecs.entities;
 
-import ecs.components.*;
-import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CollideAI;
 import ecs.components.ai.idle.*;
-import ecs.components.ai.transition.RangeTransition;
+import ecs.components.ai.transition.SelfDefendTransition;
 
 /**
  * Monster for the dungeon
@@ -17,6 +15,9 @@ public class Chort extends Monster {
 
     public Chort() {
         super(
+                new CollideAI(2f),
+                new SelfDefendTransition(),
+                new RadiusWalk(3f, 3),
                 0.08f,
                 0.08f,
                 4,
@@ -25,17 +26,11 @@ public class Chort extends Monster {
                 "character/monster/chort/idleRight",
                 "character/monster/chort/runLeft",
                 "character/monster/chort/runRight");
-        new PositionComponent(this);
+        setupAIComponent();
         setupHitboxComponent();
         setupAnimationComponent();
         setupVelocityComponent();
-        setupAIComponent();
         setupHealthComponent();
-        setupAIComponent();
-    }
-
-    @Override
-    protected void setupAIComponent() {
-        new AIComponent(this, new CollideAI(2f), new RadiusWalk(5f, 3), new RangeTransition(7f));
+        setupPositionComponent();
     }
 }

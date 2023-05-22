@@ -1,11 +1,14 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
-import ecs.components.AnimationComponent;
-import ecs.components.HealthComponent;
-import ecs.components.HitboxComponent;
-import ecs.components.VelocityComponent;
+import ecs.components.*;
+import ecs.components.ai.AIComponent;
+import ecs.components.ai.fight.IFightAI;
+import ecs.components.ai.idle.IIdleAI;
+import ecs.components.ai.transition.ITransition;
 import graphic.Animation;
+import starter.Game;
+import tools.Point;
 
 /**
  * Abstract upper class for the Monsters.
@@ -14,6 +17,9 @@ import graphic.Animation;
  */
 abstract class Monster extends Entity {
 
+    private IFightAI fightAI;
+    private ITransition transitionAI;
+    private IIdleAI idleAI;
     protected float xSpeed;
     protected float ySpeed;
     protected int maximalHealthpoints;
@@ -24,7 +30,9 @@ abstract class Monster extends Entity {
     protected String pathToRunLeft;
 
     /**
-     * @param xSpeed Movementspeed for the X-Axis
+     * @param fightAI for combat behavior of an AI controlled entity
+     * @param transitionAI for the idle behavior of an AI controlled entity
+     * @param idleAI when an ai switches between idle and fight
      * @param ySpeed Movementspeed for the Y-Axis
      * @param maximalHealthpoints Max Healthpoints
      * @param currentHealthpoints current Healthpoints
@@ -34,6 +42,9 @@ abstract class Monster extends Entity {
      * @param pathToRunRight path of the files for the animation
      */
     public Monster(
+            IFightAI fightAI,
+            ITransition transitionAI,
+            IIdleAI idleAI,
             float xSpeed,
             float ySpeed,
             int maximalHealthpoints,
@@ -42,6 +53,9 @@ abstract class Monster extends Entity {
             String pathToIdleRight,
             String pathToRunLeft,
             String pathToRunRight) {
+        this.fightAI = fightAI;
+        this.transitionAI = transitionAI;
+        this.idleAI = idleAI;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.maximalHealthpoints = maximalHealthpoints;
@@ -52,8 +66,26 @@ abstract class Monster extends Entity {
         this.pathToRunRight = pathToRunRight;
     }
 
-    /** Abstract method, so that every Monster can have his own AI */
-    protected abstract void setupAIComponent();
+    /** Method for the AI of the Monster */
+    protected void setupAIComponent() {
+        AIComponent ai = new AIComponent(this);
+        ai.setFightAI(fightAI);
+        ai.setTransitionAI(transitionAI);
+        ai.setIdleAI(idleAI);
+    }
+
+    /** Method so that the Monster doesn't spawn on the Hero */
+    protected void setupPositionComponent() {
+        Point position;
+        if (Game.currentLevel != null) {
+            position = Game.currentLevel.getRandomFloorTile().getCoordinateAsPoint();
+            // so that the trap doesn't spawn on the same Tile as the Hero
+            if (position == Game.currentLevel.getStartTile().getCoordinateAsPoint()) {
+                setupPositionComponent();
+            }
+            new PositionComponent(this, position);
+        }
+    }
 
     /** Method for the Velocity of the Monster */
     protected void setupVelocityComponent() {
