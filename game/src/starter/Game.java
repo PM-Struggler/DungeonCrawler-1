@@ -14,8 +14,7 @@ import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
-import ecs.entities.Entity;
-import ecs.entities.Hero;
+import ecs.entities.*;
 import ecs.systems.*;
 import ecs.systems.System;
 import graphic.DungeonCamera;
@@ -78,6 +77,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
     private Logger gameLogger;
+    private int leveldiff = 0;
 
     public static void main(String[] args) {
         // start the game
@@ -154,7 +154,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     @Override
     public void onLevelLoad() {
+        leveldiff++;
         currentLevel = levelAPI.getCurrentLevel();
+        spawnMonster(leveldiff);
         entities.clear();
         getHero().ifPresent(this::placeOnLevelStart);
     }
@@ -225,6 +227,30 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (pauseMenu != null) {
             if (paused) pauseMenu.showMenu();
             else pauseMenu.hideMenu();
+        }
+    }
+
+    /**
+     * Method for spawning the monsters based on rarity
+     *
+     * @param leveldiff states the difficulty of the level
+     */
+    public void spawnMonster(int leveldiff) {
+        List<Chort> chort = new ArrayList<>();
+        List<Imp> imp = new ArrayList<>();
+        List<Orc> orc = new ArrayList<>();
+        for (int i = 0; i < leveldiff; i++) {
+            // every third level spawns one monster more
+            if (i % 3 == 0) {
+                int a = (int) (Math.random() * 101);
+                if (a <= 10) {
+                    chort.add(new Chort());
+                } else if (a <= 30) {
+                    orc.add(new Orc());
+                } else if (a <= 100) {
+                    imp.add(new Imp());
+                }
+            }
         }
     }
 
