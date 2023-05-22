@@ -1,5 +1,8 @@
 package starter;
 
+import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+import static logging.LoggerConfig.initBaseLogger;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -12,12 +15,15 @@ import controller.SystemController;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.*;
-import ecs.systems.System;
 import ecs.systems.*;
+import ecs.systems.System;
 import graphic.DungeonCamera;
 import graphic.Painter;
 import graphic.hud.PauseMenu;
 import graphic.textures.TextureHandler;
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Logger;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -28,13 +34,6 @@ import level.generator.randomwalk.RandomWalkGenerator;
 import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
-
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Logger;
-
-import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static logging.LoggerConfig.initBaseLogger;
 
 /** The heart of the framework. From here all strings are pulled. */
 public class Game extends ScreenAdapter implements IOnLevelLoader {
@@ -230,20 +229,25 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             else pauseMenu.hideMenu();
         }
     }
+
+    /**
+     * Method for spawning the monsters based on rarity
+     *
+     * @param leveldiff states the difficulty of the level
+     */
     public void spawnMonster(int leveldiff) {
-        List<Chort> chort = new ArrayList<Chort>();
-        List<Imp> imp = new ArrayList<Imp>();
-        List<Orc> orc = new ArrayList<Orc>();
-        for (int i = 0; i < leveldiff; i++){
+        List<Chort> chort = new ArrayList<>();
+        List<Imp> imp = new ArrayList<>();
+        List<Orc> orc = new ArrayList<>();
+        for (int i = 0; i < leveldiff; i++) {
+            // every third level spawns one monster more
             if (i % 3 == 0) {
                 int a = (int) (Math.random() * 101);
-                if (a <= 10){
+                if (a <= 10) {
                     chort.add(new Chort());
-                }
-                else if (a <= 30){
+                } else if (a <= 30) {
                     orc.add(new Orc());
-                }
-                else if (a <= 100) {
+                } else if (a <= 100) {
                     imp.add(new Imp());
                 }
             }

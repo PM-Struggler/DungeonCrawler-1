@@ -1,12 +1,8 @@
 package ecs.components.ai.idle;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import ecs.components.HealthComponent;
-import ecs.components.HitboxComponent;
 import ecs.components.ai.AITools;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
-import ecs.entities.Imp;
 import level.elements.tile.Tile;
 import tools.Constants;
 
@@ -19,9 +15,9 @@ public class PanicWalk implements IIdleAI {
     private int currentBreak = 0;
 
     /**
-     * Starts his walk only after it has been touched. After being touched by an other
-     * Entity, the Entity finds a point in the radius and then moves there. When the point has been reached, a new
-     * point in the radius is searched for from there.
+     * Starts his walk only after it has been touched. After being touched by an other Entity, the
+     * Entity finds a point in the radius and then moves there. When the point has been reached, a
+     * new point in the radius is searched for from there.
      *
      * @param radius Radius in which a target point is to be searched for
      * @param breakTimeInSeconds how long to wait (in seconds) before searching a new goal
@@ -30,8 +26,14 @@ public class PanicWalk implements IIdleAI {
         this.radius = radius;
         this.breakTime = breakTimeInSeconds * Constants.FRAME_RATE;
     }
-    public void touched(Entity entity){
-        if (AITools.playerInRange(entity,1)) {
+
+    /**
+     * Method to check if the Hero has been touched
+     *
+     * @param entity Entity
+     */
+    public void touched(Entity entity) {
+        if (AITools.playerInRange(entity, 1)) {
             touch = true;
         }
     }
