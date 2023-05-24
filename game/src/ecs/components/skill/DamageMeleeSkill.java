@@ -10,12 +10,12 @@ import starter.Game;
 import tools.Point;
 
 public abstract class DamageMeleeSkill implements ISkillFunction {
-    private String pathToTexturesOfUpperAttack;
-    private String pathToTexturesOfLowerAttack;
-    private String pathToTexturesOfLeftAttack;
-    private String pathToTexturesOfRightAttack;
-    private Damage attackDamage;
-    private Point attackHitboxSize;
+    private final String pathToTexturesOfUpperAttack;
+    private final String pathToTexturesOfLowerAttack;
+    private final String pathToTexturesOfLeftAttack;
+    private final String pathToTexturesOfRightAttack;
+    private final Damage attackDamage;
+    private final Point attackHitboxSize;
     private static int animationFrames;
     private static boolean active;
     private static Entity attack;
@@ -70,9 +70,9 @@ public abstract class DamageMeleeSkill implements ISkillFunction {
                             if (b != entity) {
                                 b.getComponent(HealthComponent.class)
                                     .ifPresent(
-                                        hc -> {
-                                            ((HealthComponent) hc).receiveHit(attackDamage);
-                                        });
+                                        hc ->
+                                            ((HealthComponent) hc).receiveHit(attackDamage));
+                                        ;
                             }
                         };
                     new HitboxComponent(
@@ -90,9 +90,8 @@ public abstract class DamageMeleeSkill implements ISkillFunction {
                             if (b != entity) {
                                 b.getComponent(HealthComponent.class)
                                     .ifPresent(
-                                        hc -> {
-                                            ((HealthComponent) hc).receiveHit(attackDamage);
-                                        });
+                                        hc ->
+                                            ((HealthComponent) hc).receiveHit(attackDamage));
                             }
                         };
                     new HitboxComponent(
@@ -108,9 +107,8 @@ public abstract class DamageMeleeSkill implements ISkillFunction {
                         if (b != entity) {
                             b.getComponent(HealthComponent.class)
                                 .ifPresent(
-                                    hc -> {
-                                        ((HealthComponent) hc).receiveHit(attackDamage);
-                                    });
+                                    hc ->
+                                        ((HealthComponent) hc).receiveHit(attackDamage));
                         }
                     };
                 new HitboxComponent(
@@ -131,9 +129,8 @@ public abstract class DamageMeleeSkill implements ISkillFunction {
                             if (b != entity) {
                                 b.getComponent(HealthComponent.class)
                                     .ifPresent(
-                                        hc -> {
-                                            ((HealthComponent) hc).receiveHit(attackDamage);
-                                        });
+                                        hc ->
+                                            ((HealthComponent) hc).receiveHit(attackDamage));
                             }
                         };
                     new HitboxComponent(
@@ -151,9 +148,8 @@ public abstract class DamageMeleeSkill implements ISkillFunction {
                             if (b != entity) {
                                 b.getComponent(HealthComponent.class)
                                     .ifPresent(
-                                        hc -> {
-                                            ((HealthComponent) hc).receiveHit(attackDamage);
-                                        });
+                                        hc ->
+                                            ((HealthComponent) hc).receiveHit(attackDamage));
                             }
                         };
                     new HitboxComponent(
@@ -169,9 +165,8 @@ public abstract class DamageMeleeSkill implements ISkillFunction {
                         if (b != entity) {
                             b.getComponent(HealthComponent.class)
                                 .ifPresent(
-                                    hc -> {
-                                        ((HealthComponent) hc).receiveHit(attackDamage);
-                                    });
+                                    hc ->
+                                        ((HealthComponent) hc).receiveHit(attackDamage));
                         }
                     };
                 new HitboxComponent(
