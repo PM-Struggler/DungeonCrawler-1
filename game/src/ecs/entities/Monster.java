@@ -17,9 +17,9 @@ import tools.Point;
  */
 abstract class Monster extends Entity {
 
-    private IFightAI fightAI;
-    private ITransition transitionAI;
-    private IIdleAI idleAI;
+    private final IFightAI fightAI;
+    private final ITransition transitionAI;
+    private final IIdleAI idleAI;
     protected float xSpeed;
     protected float ySpeed;
     protected int maximalHealthpoints;
