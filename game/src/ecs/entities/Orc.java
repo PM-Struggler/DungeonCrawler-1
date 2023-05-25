@@ -23,7 +23,10 @@ public class Orc extends Monster {
                 "character/monster/orc/idleLeft",
                 "character/monster/orc/idleRight",
                 "character/monster/orc/runLeft",
-                "character/monster/orc/runRight");
+                "character/monster/orc/runRight",
+                "knight/idleRight",
+                "knight/idleRight",
+                entity -> System.out.println("Tot"));
         setupAIComponent();
         setupHitboxComponent();
         setupAnimationComponent();

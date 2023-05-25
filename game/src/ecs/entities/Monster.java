@@ -28,6 +28,9 @@ abstract class Monster extends Entity {
     protected String pathToIdleLeft;
     protected String pathToRunRight;
     protected String pathToRunLeft;
+    protected String pathToisHit;
+    protected String pathToDeath;
+    private final IOnDeathFunction deathFunction;
 
     /**
      * @param fightAI for combat behavior of an AI controlled entity
@@ -52,7 +55,10 @@ abstract class Monster extends Entity {
             String pathToIdleLeft,
             String pathToIdleRight,
             String pathToRunLeft,
-            String pathToRunRight) {
+            String pathToRunRight,
+            String pathToisHit,
+            String pathToDeath,
+            IOnDeathFunction deathFunction) {
         this.fightAI = fightAI;
         this.transitionAI = transitionAI;
         this.idleAI = idleAI;
@@ -64,6 +70,9 @@ abstract class Monster extends Entity {
         this.pathToIdleRight = pathToIdleRight;
         this.pathToRunLeft = pathToRunLeft;
         this.pathToRunRight = pathToRunRight;
+        this.pathToisHit = pathToisHit;
+        this.pathToDeath = pathToDeath;
+        this.deathFunction = deathFunction;
     }
 
     /** Method for the AI of the Monster */
@@ -97,8 +106,13 @@ abstract class Monster extends Entity {
     /** Method for the Health of the Monster */
     protected void setupHealthComponent() {
         HealthComponent hc = new HealthComponent(this);
+        Animation isHit = AnimationBuilder.buildAnimation(this.pathToisHit);
+        Animation death = AnimationBuilder.buildAnimation(this.pathToDeath);
         hc.setCurrentHealthpoints(this.currentHealthpoints);
         hc.setMaximalHealthpoints(this.maximalHealthpoints);
+        hc.setGetHitAnimation(isHit);
+        hc.setDeathAnimation(death);
+        hc.setOnDeath(deathFunction);
     }
 
     /** Method for the Animation of the Monster */
@@ -113,7 +127,7 @@ abstract class Monster extends Entity {
         // Printline to check if a collision happened
         new HitboxComponent(
                 this,
-                (you, other, direction) -> System.out.println("Enter"),
-                (you, other, direction) -> System.out.println("Leave"));
+                (you, other, direction) -> System.out.println(currentHealthpoints),
+                (you, other, direction) -> System.out.println(currentHealthpoints));
     }
 }

@@ -13,26 +13,36 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
 
     private String pathToTexturesOfProjectile;
     private float projectileSpeed;
-
+    private boolean pierced;
     private float projectileRange;
     private Damage projectileDamage;
     private Point projectileHitboxSize;
-
     private ITargetSelection selectionFunction;
 
+    /**
+     * @param pathToTexturesOfProjectile Animation
+     * @param projectileSpeed Speed for projectile
+     * @param projectileDamage Damageamount,damagetype,cause
+     * @param projectileHitboxSize Hitbox of the projectile
+     * @param selectionFunction Targetselection
+     * @param projectileRange Range of the projectile
+     * @param pierced To let the projectile pierce through
+     */
     public DamageProjectileSkill(
             String pathToTexturesOfProjectile,
             float projectileSpeed,
             Damage projectileDamage,
             Point projectileHitboxSize,
             ITargetSelection selectionFunction,
-            float projectileRange) {
+            float projectileRange,
+            boolean pierced) {
         this.pathToTexturesOfProjectile = pathToTexturesOfProjectile;
         this.projectileDamage = projectileDamage;
         this.projectileSpeed = projectileSpeed;
         this.projectileRange = projectileRange;
         this.projectileHitboxSize = projectileHitboxSize;
         this.selectionFunction = selectionFunction;
+        this.pierced = pierced;
     }
 
     @Override
@@ -64,11 +74,12 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
                                 .ifPresent(
                                         hc -> {
                                             ((HealthComponent) hc).receiveHit(projectileDamage);
-                                            Game.removeEntity(projectile);
+                                            if (!pierced) {
+                                                Game.removeEntity(projectile);
+                                            }
                                         });
                     }
                 };
-
         new HitboxComponent(
                 projectile, new Point(0.25f, 0.25f), projectileHitboxSize, collide, null);
     }

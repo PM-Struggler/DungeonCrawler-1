@@ -25,7 +25,10 @@ public class Chort extends Monster {
                 "character/monster/chort/idleLeft",
                 "character/monster/chort/idleRight",
                 "character/monster/chort/runLeft",
-                "character/monster/chort/runRight");
+                "character/monster/chort/runRight",
+                "knight/idleRight",
+                "knight/idleRight",
+                entity -> System.out.println("Tot"));
         setupAIComponent();
         setupHitboxComponent();
         setupAnimationComponent();
