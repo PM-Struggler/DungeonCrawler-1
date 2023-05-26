@@ -24,7 +24,10 @@ public class Imp extends Monster {
                 "character/monster/imp/idleLeft",
                 "character/monster/imp/idleRight",
                 "character/monster/imp/runLeft",
-                "character/monster/imp/runRight");
+                "character/monster/imp/runRight",
+                "knight/idleRight",
+                "knight/idleRight",
+                entity -> System.out.println("Tot"));
         setupAIComponent();
         setupHitboxComponent();
         setupAnimationComponent();
